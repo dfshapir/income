@@ -10,9 +10,27 @@ knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 library(readxl)
 library(readr)
+library(zoo)
+library(gsubfn)
+library(lubridate)
 ```
 
 ```{r}
+income <- read_xlsx("income.xlsx")
 
+income$Quarter <- as.yearqtr(income$Quarter, format = "%Y-%m-%d")
+```
+
+```{r}
+plot <- ggplot(income, aes(x = Quarter, y = Value)) +
+  geom_line(color = "blue") +
+  geom_point() +
+  ylim(50, 120) +
+  labs(title = "Quarterly Dynamics of Russian Real Disposable Incomes",
+       subtitle = "Data depicted as a percentage of 2013 Q4, set at 100")
+
+plot
+
+ggsave("plot.png")
 ```
 
